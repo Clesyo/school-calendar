@@ -1,7 +1,12 @@
 package br.com.schoolcalendar.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class User extends BaseEntity {
@@ -12,6 +17,9 @@ public class User extends BaseEntity {
 	private String password;
 	@Column(unique = true)
 	private String email;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Role> roles = new ArrayList<>();
 	
 	public String getName() {
 		return name;
@@ -31,6 +39,13 @@ public class User extends BaseEntity {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
 	
 	
 }
