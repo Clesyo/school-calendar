@@ -1,8 +1,15 @@
 package br.com.schoolcalendar.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import br.com.schoolcalendar.enums.AdministrativeCategory;
 import br.com.schoolcalendar.enums.AdministrativeDependence;
@@ -11,6 +18,10 @@ import br.com.schoolcalendar.enums.Localization;
 @Entity
 public class Institution {
 
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+	
 	private String name;
 	private String phone;
 	@Enumerated(EnumType.STRING)
@@ -19,6 +30,10 @@ public class Institution {
 	private AdministrativeCategory category;
 	@Enumerated(EnumType.STRING)
 	private AdministrativeDependence dependence;
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id")
+	private Address address;
 
 	public String getName() {
 		return name;
