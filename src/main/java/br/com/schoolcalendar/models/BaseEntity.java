@@ -1,7 +1,7 @@
 package br.com.schoolcalendar.models;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -25,7 +25,7 @@ public abstract class BaseEntity implements Serializable{
 	private Long id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date createAt;
+	private LocalDateTime createAt;
 
 	@Column(name = "public_id")
 	private String publicId;
@@ -38,11 +38,11 @@ public abstract class BaseEntity implements Serializable{
 		this.id = id;
 	}
 
-	public Date getCreateAt() {
+	public LocalDateTime getCreateAt() {
 		return createAt;
 	}
 
-	public void setCreateAt(Date createAt) {
+	public void setCreateAt(LocalDateTime createAt) {
 		this.createAt = createAt;
 	}
 
@@ -57,6 +57,6 @@ public abstract class BaseEntity implements Serializable{
 	@PrePersist
 	protected void prePersiste() {
 		this.publicId = !StringUtils.hasLength(publicId) ? UUID.randomUUID().toString() : publicId;
-		this.createAt = new Date();
+		this.createAt =  LocalDateTime.now();
 	}
 }
