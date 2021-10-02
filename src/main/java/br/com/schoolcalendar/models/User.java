@@ -18,7 +18,7 @@ public class User extends BaseEntity {
 	@Column(unique = true)
 	private String email;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Role> roles = new ArrayList<>();
 	
 	public String getName() {

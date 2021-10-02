@@ -16,14 +16,14 @@ import javax.persistence.TemporalType;
 import org.springframework.util.StringUtils;
 
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable{
+public abstract class BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime createAt;
 
@@ -53,10 +53,11 @@ public abstract class BaseEntity implements Serializable{
 	public void setPublicId(String publicId) {
 		this.publicId = publicId;
 	}
-	
+
 	@PrePersist
 	protected void prePersiste() {
 		this.publicId = !StringUtils.hasLength(publicId) ? UUID.randomUUID().toString() : publicId;
-		this.createAt =  LocalDateTime.now();
+		this.createAt = LocalDateTime.now();
 	}
+
 }

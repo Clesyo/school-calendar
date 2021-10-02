@@ -15,18 +15,20 @@ public class Student extends BaseEntity {
 	private static final long serialVersionUID = 3623929688536238498L;
 
 	private String name;
-	
+
 	private LocalDate birthday;
 	@Column(unique = true)
-	
+
 	private String cpf;
 	@Column(unique = true)
-	
+
 	private String email;
-	
+
 	private String phone;
-	
+
 	private String registration;
+
+	private String searchQuery;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
@@ -80,6 +82,14 @@ public class Student extends BaseEntity {
 		this.registration = registration;
 	}
 
+	public String getSearchQuery() {
+		return searchQuery;
+	}
+
+	public void setSearchQuery(String searchQuery) {
+		this.searchQuery = searchQuery;
+	}
+
 	public Address getAddress() {
 		return address;
 	}
@@ -88,4 +98,19 @@ public class Student extends BaseEntity {
 		this.address = address;
 	}
 
+	@Override
+	protected void prePersiste() {
+		super.prePersiste();
+		concatenateSearchQuery();
+	}
+
+	public void concatenateSearchQuery() {
+		String query = "";
+		
+		query += this.cpf != null ? this.cpf : "";
+		query += this.name != null ? this.name : "";
+		query += this.registration != null ? this.registration : "";
+		
+		this.setSearchQuery(query);
+	}
 }
