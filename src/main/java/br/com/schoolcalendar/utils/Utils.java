@@ -38,6 +38,10 @@ public abstract class Utils {
 		return phone.replaceAll("[\\s()-]", "");
 	}
 
+	public static boolean isEmpty(String param) {
+		return StringUtils.isEmpty(param);
+	}
+
 	public static boolean isPhoneNumberValid(String phoneNumber) {
 
 		String processedPhone = phoneNumber.replaceAll("[\\s()-]", "");
@@ -72,79 +76,81 @@ public abstract class Utils {
 		// se passar por todas as validações acima, o formato está correto.
 		return true;
 	}
-	
+
 	public static boolean isCpfValido(String xCPF) {
-        try {
+		try {
 
-            if (StringUtils.isEmpty(xCPF)){
-                return false;
-            }
+			if (StringUtils.isEmpty(xCPF)) {
+				return false;
+			}
 
-            if (hasAllRepeatedDigits(xCPF)){
-                return false;
+			if (hasAllRepeatedDigits(xCPF)) {
+				return false;
 
-            }
+			}
 
-            if (xCPF.length() < 11){
-                return false;
-            }
+			if (xCPF.length() < 11) {
+				return false;
+			}
 
-            int d1, d4, xx, nCount, resto, digito1, digito2;
-            String Check;
-            String Separadores = "/-.";
-            d1 = 0;
-            d4 = 0;
-            xx = 1;
-            for (nCount = 0; nCount < xCPF.length() - 2; nCount++) {
-                String s_aux = xCPF.substring(nCount, nCount + 1);
-                if (Separadores.indexOf(s_aux) == -1) {
-                    d1 = d1 + (11 - xx) * Integer.valueOf(s_aux).intValue();
-                    d4 = d4 + (12 - xx) * Integer.valueOf(s_aux).intValue();
-                    xx++;
-                }
-            }
-            resto = (d1 % 11);
-            if (resto < 2) {
-                digito1 = 0;
-            } else {
-                digito1 = 11 - resto;
-            }
+			int d1, d4, xx, nCount, resto, digito1, digito2;
+			String Check;
+			String Separadores = "/-.";
+			d1 = 0;
+			d4 = 0;
+			xx = 1;
+			for (nCount = 0; nCount < xCPF.length() - 2; nCount++) {
+				String s_aux = xCPF.substring(nCount, nCount + 1);
+				if (Separadores.indexOf(s_aux) == -1) {
+					d1 = d1 + (11 - xx) * Integer.valueOf(s_aux).intValue();
+					d4 = d4 + (12 - xx) * Integer.valueOf(s_aux).intValue();
+					xx++;
+				}
+			}
+			resto = (d1 % 11);
+			if (resto < 2) {
+				digito1 = 0;
+			} else {
+				digito1 = 11 - resto;
+			}
 
-            d4 = d4 + 2 * digito1;
-            resto = (d4 % 11);
-            if (resto < 2) {
-                digito2 = 0;
-            } else {
-                digito2 = 11 - resto;
-            }
+			d4 = d4 + 2 * digito1;
+			resto = (d4 % 11);
+			if (resto < 2) {
+				digito2 = 0;
+			} else {
+				digito2 = 11 - resto;
+			}
 
-            Check = String.valueOf(digito1) + String.valueOf(digito2);
-            String s_aux2 = xCPF.substring(xCPF.length() - 2, xCPF.length());
+			Check = String.valueOf(digito1) + String.valueOf(digito2);
+			String s_aux2 = xCPF.substring(xCPF.length() - 2, xCPF.length());
 
-            if (s_aux2.compareTo(Check) != 0) {
-                return false;
-            }
+			if (s_aux2.compareTo(Check) != 0) {
+				return false;
+			}
 
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-	
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	private static boolean hasAllRepeatedDigits(String xcpf) {
-        String cpf=xcpf.replace(".", "").replace("-", "");
-        for (int i = 1; i < cpf.length(); i++) {
-            if (cpf.charAt(i) != cpf.charAt(0)) {
-                return false;
-            }
-        }
-        return true;
-    }
-	
+		String cpf = xcpf.replace(".", "").replace("-", "");
+		for (int i = 1; i < cpf.length(); i++) {
+			if (cpf.charAt(i) != cpf.charAt(0)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public static boolean isEmailValid(String email) {
-        if (StringUtils.isEmpty(email)) return false;
-        
-        Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-        return VALID_EMAIL_ADDRESS_REGEX.matcher(email).find();
-    }	
+		if (StringUtils.isEmpty(email))
+			return false;
+
+		Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+				Pattern.CASE_INSENSITIVE);
+		return VALID_EMAIL_ADDRESS_REGEX.matcher(email).find();
+	}
 }

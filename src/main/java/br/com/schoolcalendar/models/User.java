@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class User extends BaseEntity {
@@ -20,6 +21,12 @@ public class User extends BaseEntity {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<Role> roles = new ArrayList<>();
+	
+	@OneToOne(mappedBy = "user")
+	private List<Teacher> teachers;
+	
+	@OneToOne(mappedBy = "user")
+	private List<Student> students;
 	
 	public String getName() {
 		return name;
