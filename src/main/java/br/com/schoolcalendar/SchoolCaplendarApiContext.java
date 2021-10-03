@@ -35,4 +35,9 @@ public class SchoolCaplendarApiContext {
 		apiConfigRepository.save(apiConfig);
 		Utils.setContext(this);
 	}
+
+	public ApiConfig getApiConfig() {
+		return apiConfig;
+	}
+	
 }

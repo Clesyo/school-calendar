@@ -1,16 +1,19 @@
 package br.com.schoolcalendar.models;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
+@Entity
 public class Address {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	private State state;
+	private String state;
 	private Integer number;
 	private String street;
 	private String complement;
@@ -19,16 +22,22 @@ public class Address {
 	private String city;
 	private Integer ibgeCode;
 	
+	@OneToOne(mappedBy = "address")
+	private Student student;
+	
+	@OneToOne(mappedBy = "address")
+	private Teacher teacher;
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public State getState() {
+	public String getState() {
 		return state;
 	}
-	public void setState(State state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 	public Integer getNumber() {

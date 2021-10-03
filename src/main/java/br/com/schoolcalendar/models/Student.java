@@ -30,7 +30,7 @@ public class Student extends BaseEntity {
 
 	private String searchQuery;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 
