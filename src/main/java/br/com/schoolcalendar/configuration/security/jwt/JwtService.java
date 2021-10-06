@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import br.com.schoolcalendar.SchoolCaplendarApiContext;
@@ -22,13 +23,13 @@ public class JwtService {
 	@Autowired
 	private SchoolCaplendarApiContext context;
 
-	public String generateToken(User user) {
+	public String generateToken(UserDetails user) {
 		Long expiracao = Long.valueOf(context.getApiConfig().getJwtExpirationInMinutes());
 		LocalDateTime horaExpiracao = LocalDateTime.now().plusMinutes(expiracao);
 		Instant instant = horaExpiracao.atZone(ZoneId.systemDefault()).toInstant();
 		Date date = Date.from(instant);
 
-		return Jwts.builder().setIssuer("School Calendar API").setSubject(user.getEmail()).setExpiration(date)
+		return Jwts.builder().setIssuer("School Calendar API").setSubject(user.getUsername()).setExpiration(date)
 				.setIssuedAt(new Date()).signWith(SignatureAlgorithm.HS512, context.getApiConfig().getJwtSecret())
 				.compact();
 	}

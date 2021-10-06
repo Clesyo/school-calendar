@@ -5,12 +5,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.schoolcalendar.configuration.security.jwt.JwtService;
@@ -26,10 +25,8 @@ public class AuthenticationService implements UserDetailsService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private AuthenticationManager authManager;
-
-	@Autowired
 	private JwtService jwtService;
+	private PasswordEncoder encode = new BCryptPasswordEncoder();
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -40,16 +37,19 @@ public class AuthenticationService implements UserDetailsService {
 
 	public ResponseEntity<Object> authenticate(@Valid CredentialForm form) {
 
-		UsernamePasswordAuthenticationToken user = form.convert();
-		return authenticateUser(user);
+		return authenticateUser(form);
 	}
 
-	private ResponseEntity<Object> authenticateUser(UsernamePasswordAuthenticationToken user) {
+	private ResponseEntity<Object> authenticateUser(CredentialForm form) {
 		try {
-			Authentication authenticate = authManager.authenticate(user);
-			String token = jwtService.generateToken(authenticate);
-			return ResponseEntity.ok(new TokenDto(token, "Bearer"));
+			UserDetails user = loadUserByUsername(form.getEmail());
+			boolean isValidPassword = encode.matches(form.getPassword(), user.getPassword());
+			if (isValidPassword) {
 
+				String token = jwtService.generateToken(user);
+				return ResponseEntity.ok(new TokenDto(token, "Bearer"));
+			}
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(

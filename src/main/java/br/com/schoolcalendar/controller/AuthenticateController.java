@@ -7,6 +7,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,14 +22,10 @@ public class AuthenticateController {
 	@Autowired
 	private AuthenticationService authenticationService;
 	
+	@PostMapping
 	public ResponseEntity<Object> auth(@RequestBody @Valid CredentialForm form, BindingResult result)
 			throws MethodArgumentNotValidException, NoSuchMethodException, SecurityException {
-		if(result.hasErrors()) {
-			throw new MethodArgumentNotValidException(
-					new MethodParameter(this.getClass().getDeclaredMethod("authenticate", CredentialForm.class, BindingResult.class), 0), 
-					result
-					);
-		}
+		
 		return authenticationService.authenticate(form); 
 	}
 }
