@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +25,7 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(unique = true)
 	private String email;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Role> roles = new ArrayList<>();
 
 	@OneToOne(mappedBy = "user")
@@ -88,7 +87,6 @@ public class User extends BaseEntity implements UserDetails {
 				.anyMatch(role -> role.getName().toUpperCase().equals(UserType.ADMIN.name().toUpperCase()));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return (Collection<? extends GrantedAuthority>) roles;

@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class State {
@@ -20,6 +21,9 @@ public class State {
 	private String uf;
 
 	private Integer code;
+	
+	@OneToOne(mappedBy = "address")
+	private Student student;
 
 	@OneToMany(mappedBy = "state")
 	private List<City> cities;

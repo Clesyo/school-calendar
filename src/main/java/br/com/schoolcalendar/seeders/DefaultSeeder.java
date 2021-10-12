@@ -44,7 +44,7 @@ public class DefaultSeeder {
 
 	@Autowired
 	private CityRepository cityRepository;
-	
+
 	private List<State> allStates;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSeeder.class);
@@ -64,10 +64,11 @@ public class DefaultSeeder {
 	}
 
 	public void seedProfiles() {
-		LOGGER.info(">>> Creating default roles");
-		Utils.convertUserTypeRoles(ADMIN, STUDENT, TEACHER).forEach(type -> roleRopositoty.save(type));
-		LOGGER.info("Default roles created <<<");
-
+		if (roleRopositoty.count() == 0) {
+			LOGGER.info(">>> Creating default roles");
+			Utils.convertUserTypeRoles(ADMIN, STUDENT, TEACHER).forEach(type -> roleRopositoty.save(type));
+			LOGGER.info("Default roles created <<<");
+		}
 	}
 
 	public void seedStatesAndCities() {

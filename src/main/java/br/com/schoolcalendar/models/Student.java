@@ -8,6 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+
+import br.com.schoolcalendar.utils.Utils;
 
 @Entity
 public class Student extends BaseEntity {
@@ -17,20 +21,20 @@ public class Student extends BaseEntity {
 	private String name;
 
 	private LocalDate birthday;
-	@Column(unique = true)
 
-	private String cpf;
 	@Column(unique = true)
+	private String cpf;
 
 	private String email;
 
 	private String phone;
 
+	@Column(unique = true)
 	private String registration;
 
 	private String searchQuery;
-	
-	@OneToOne(cascade = CascadeType.ALL)
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
 
@@ -102,7 +106,16 @@ public class Student extends BaseEntity {
 		this.address = address;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@Override
+	@PrePersist
 	protected void prePersiste() {
 		super.prePersiste();
 		concatenateSearchQuery();
@@ -110,11 +123,38 @@ public class Student extends BaseEntity {
 
 	public void concatenateSearchQuery() {
 		String query = "";
-		
+
 		query += this.cpf != null ? this.cpf : "";
 		query += this.name != null ? this.name : "";
 		query += this.registration != null ? this.registration : "";
-		
-		this.setSearchQuery(query);
+
+		this.setSearchQuery(Utils.normalizeToQuery(query));
+	}
+
+	@PostPersist
+	protected void postPersist() {
+		generateRegistration();
+	}
+
+	public void generateRegistration() {
+		String registration = "A-";
+
+		String id = String.valueOf(this.getId());
+
+		registration += String.valueOf(LocalDate.now().getYear());
+		registration += this.cpf != null ? this.cpf.substring(0, 3) : "";
+
+		if (id.length() == 1) {
+			registration += "000";
+		}
+		if (id.length() == 2) {
+			registration += "00";
+		}
+		if (id.length() == 3) {
+			registration += "0";
+		}
+
+		registration += id;
+		this.setRegistration(registration);
 	}
 }

@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class City {
@@ -21,6 +22,9 @@ public class City {
 	@ManyToOne
 	@JoinColumn(name = "state_id")
 	private State state;
+	
+	@OneToOne(mappedBy = "address")
+	private Student student;
 
 	public City(String name, Integer ibgeCode, State state) {
 		this.name = name;

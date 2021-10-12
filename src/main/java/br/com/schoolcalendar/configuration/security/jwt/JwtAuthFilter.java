@@ -39,11 +39,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		if (!authenticationRequest) {
 			validateToken(request);
 		}
-
 		filterChain.doFilter(request, response);
 	}
 
-	public void authenticate(String token,HttpServletRequest request ) {
+	public void authenticate(String token, HttpServletRequest request) {
 		String login = jwtService.obtainLoginUser(token);
 		User user = userRepository.findByEmail(login).get();
 		UsernamePasswordAuthenticationToken userPasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

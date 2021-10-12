@@ -1,7 +1,11 @@
 package br.com.schoolcalendar.utils;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -34,8 +38,12 @@ public abstract class Utils {
 		Utils.context = context;
 	}
 
-	public String validPhone(String phone) {
+	public static String validPhone(String phone) {
 		return phone.replaceAll("[\\s()-]", "");
+	}
+
+	public static String validCpf(String cpf) {
+		return cpf.replaceAll("[\\s()-.]", "");
 	}
 
 	public static boolean isEmpty(String param) {
@@ -77,73 +85,76 @@ public abstract class Utils {
 		return true;
 	}
 
-	public static boolean isCpfValido(String xCPF) {
-		try {
+	 public static boolean isCpfValido(String CPF) {
+	        // considera-se erro CPF's formados por uma sequencia de numeros iguais
+	        if (CPF.equals("00000000000") ||
+	            CPF.equals("11111111111") ||
+	            CPF.equals("22222222222") || CPF.equals("33333333333") ||
+	            CPF.equals("44444444444") || CPF.equals("55555555555") ||
+	            CPF.equals("66666666666") || CPF.equals("77777777777") ||
+	            CPF.equals("88888888888") || CPF.equals("99999999999") ||
+	            (CPF.length() != 11))
+	            return(false);
 
-			if (StringUtils.isEmpty(xCPF)) {
-				return false;
-			}
+	        char dig10, dig11;
+	        int sm, i, r, num, peso;
 
-			if (hasAllRepeatedDigits(xCPF)) {
-				return false;
+	        // "try" - protege o codigo para eventuais erros de conversao de tipo (int)
+	        try {
+	        // Calculo do 1o. Digito Verificador
+	            sm = 0;
+	            peso = 10;
+	            for (i=0; i<9; i++) {
+	        // converte o i-esimo caractere do CPF em um numero:
+	        // por exemplo, transforma o caractere '0' no inteiro 0
+	        // (48 eh a posicao de '0' na tabela ASCII)
+	            num = (int)(CPF.charAt(i) - 48);
+	            sm = sm + (num * peso);
+	            peso = peso - 1;
+	            }
 
-			}
+	            r = 11 - (sm % 11);
+	            if ((r == 10) || (r == 11))
+	                dig10 = '0';
+	            else dig10 = (char)(r + 48); // converte no respectivo caractere numerico
 
-			if (xCPF.length() < 11) {
-				return false;
-			}
+	        // Calculo do 2o. Digito Verificador
+	            sm = 0;
+	            peso = 11;
+	            for(i=0; i<10; i++) {
+	            num = (int)(CPF.charAt(i) - 48);
+	            sm = sm + (num * peso);
+	            peso = peso - 1;
+	            }
 
-			int d1, d4, xx, nCount, resto, digito1, digito2;
-			String Check;
-			String Separadores = "/-.";
-			d1 = 0;
-			d4 = 0;
-			xx = 1;
-			for (nCount = 0; nCount < xCPF.length() - 2; nCount++) {
-				String s_aux = xCPF.substring(nCount, nCount + 1);
-				if (Separadores.indexOf(s_aux) == -1) {
-					d1 = d1 + (11 - xx) * Integer.valueOf(s_aux).intValue();
-					d4 = d4 + (12 - xx) * Integer.valueOf(s_aux).intValue();
-					xx++;
-				}
-			}
-			resto = (d1 % 11);
-			if (resto < 2) {
-				digito1 = 0;
-			} else {
-				digito1 = 11 - resto;
-			}
+	            r = 11 - (sm % 11);
+	            if ((r == 10) || (r == 11))
+	                 dig11 = '0';
+	            else dig11 = (char)(r + 48);
 
-			d4 = d4 + 2 * digito1;
-			resto = (d4 % 11);
-			if (resto < 2) {
-				digito2 = 0;
-			} else {
-				digito2 = 11 - resto;
-			}
+	        // Verifica se os digitos calculados conferem com os digitos informados.
+	            if ((dig10 == CPF.charAt(9)) && (dig11 == CPF.charAt(10)))
+	                 return(true);
+	            else return(false);
+	                } catch (InputMismatchException erro) {
+	                return(false);
+	            }
+	        }
 
-			Check = String.valueOf(digito1) + String.valueOf(digito2);
-			String s_aux2 = xCPF.substring(xCPF.length() - 2, xCPF.length());
 
-			if (s_aux2.compareTo(Check) != 0) {
-				return false;
-			}
+	 public static String normalizeToQuery(String query) {
+			String newQuery = StringUtils.stripAccents(query);
+			newQuery = StringUtils.upperCase(newQuery);
+			newQuery = StringUtils.deleteWhitespace(newQuery);
+			
+	    	StringBuilder ret =  new StringBuilder();
+	    	Matcher matches = Pattern.compile( "[A-Z0-9]" ).matcher(newQuery);
+	    	while (matches.find()){
+	    	    ret.append(matches.group(0));
+	    	}
 
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	private static boolean hasAllRepeatedDigits(String xcpf) {
-		String cpf = xcpf.replace(".", "").replace("-", "");
-		for (int i = 1; i < cpf.length(); i++) {
-			if (cpf.charAt(i) != cpf.charAt(0)) {
-				return false;
-			}
-		}
-		return true;
-	}
+	    	return ret.toString();
+	    }
 
 	public static boolean isEmailValid(String email) {
 		if (StringUtils.isEmpty(email))
@@ -153,4 +164,15 @@ public abstract class Utils {
 				Pattern.CASE_INSENSITIVE);
 		return VALID_EMAIL_ADDRESS_REGEX.matcher(email).find();
 	}
+
+	public static String dateFormatedToString(LocalDate date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return date.format(formatter);
+	}
+
+	public static LocalDate dateFormatedToLocalDate(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return LocalDate.parse(date, formatter);
+	}
+
 }
