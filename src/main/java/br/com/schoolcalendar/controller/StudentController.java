@@ -36,7 +36,7 @@ public class StudentController {
 	}
 	
 	@GetMapping("/{publicId}")
-	public StudentDto findByPublicId(String publicId) {
+	public StudentDto findByPublicId(@PathVariable String publicId) {
 		return StudentDto.convertToDto(studentService.findByPublicId(publicId));
 	}
 }
