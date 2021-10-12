@@ -34,4 +34,9 @@ public class StudentController {
 	public StudentDto findById(@PathVariable Long id) {
 		return StudentDto.convertToDto(studentService.findById(id));
 	}
+	
+	@GetMapping("/{publicId}")
+	public StudentDto findByPublicId(String publicId) {
+		return StudentDto.convertToDto(studentService.findByPublicId(publicId));
+	}
 }

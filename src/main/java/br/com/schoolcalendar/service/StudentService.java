@@ -67,6 +67,12 @@ public class StudentService implements IStudentService {
 	}
 
 	@Override
+	public Student findByPublicId(String publicId) {
+		return studentRepository.findByPublicId(publicId)
+				.orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado para o publicId informado."));
+	}
+	
+	@Override
 	public Student update(Long id, StudentForm form) {
 		return null;
 	}

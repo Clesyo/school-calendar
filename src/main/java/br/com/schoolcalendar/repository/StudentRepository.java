@@ -12,7 +12,7 @@ public interface StudentRepository extends JpaRepository<Student, Long>{
 
 	Page<Student> findBySearchQuery(Optional<String> searchQuery, Pageable pageable);
 	Optional<Student> findByRegistration(String registration);
-	
+	Optional<Student> findByPublicId(String publicId);
 	Optional<Student> findByCpf(String cpf);
 	Optional<Student> findByCpfAndEmail(String cpf, String email);
 }
