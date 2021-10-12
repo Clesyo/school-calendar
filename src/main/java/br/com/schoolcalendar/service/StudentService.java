@@ -62,7 +62,8 @@ public class StudentService implements IStudentService {
 
 	@Override
 	public Student findById(Long id) {
-		return null;
+		return studentRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado para o ID informado."));
 	}
 
 	@Override
