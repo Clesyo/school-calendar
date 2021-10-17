@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
+import br.com.schoolcalendar.models.Address;
 import br.com.schoolcalendar.models.Student;
 import br.com.schoolcalendar.utils.Utils;
 import br.com.schoolcalendar.validator.ValidPassword;
@@ -37,15 +38,15 @@ public class StudentForm {
 
 	@NotBlank(message = "Logradouro não pode ser vazio.")
 	private String street;
-	
+
 	private String complement;
 
 	@NotBlank(message = "CEP não pode ser vazio.")
 	private String zipCode;
-	
+
 	@NotBlank(message = "Bairro não pode ser vazio.")
 	private String district;
-	
+
 	@NotNull(message = "Codigo do IBGE não pode ser vazio.")
 	private Integer ibgeCode;
 
@@ -166,7 +167,24 @@ public class StudentForm {
 		student.setCpf(getCpf());
 		student.setEmail(email);
 		student.setPhone(getPhone());
-
 		return student;
 	}
+
+	public Address toAddress(Student... students) {
+		Address address = new Address();
+
+		List<Student> list = Arrays.asList(students);
+		if (!list.isEmpty())
+
+		address = list.get(0).getAddress();
+		
+		address.setDistrict(district);
+		address.setNumber(number);
+		address.setStreet(street);
+		address.setZipCode(zipCode);
+		address.setComplement(complement);
+		return address;
+
+	}
+
 }

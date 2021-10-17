@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,20 +24,25 @@ public class StudentController {
 
 	@Autowired
 	private IStudentService studentService;
-	
+
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public StudentDto save(@RequestBody @Valid StudentForm form) {
 		return StudentDto.convertToDto(studentService.save(form));
 	}
-	
+
 	@GetMapping("/{id}")
 	public StudentDto findById(@PathVariable Long id) {
 		return StudentDto.convertToDto(studentService.findById(id));
 	}
-	
+
 	@GetMapping("/{publicId}")
 	public StudentDto findByPublicId(@PathVariable String publicId) {
 		return StudentDto.convertToDto(studentService.findByPublicId(publicId));
+	}
+
+	@PutMapping("/{id}")
+	public StudentDto update(@PathVariable Long id, @RequestBody StudentForm form) {
+		return StudentDto.convertToDto(studentService.update(id, form));
 	}
 }

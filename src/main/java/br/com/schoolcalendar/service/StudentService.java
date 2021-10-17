@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.schoolcalendar.enums.UserType;
+import br.com.schoolcalendar.exception.InvalidException;
 import br.com.schoolcalendar.forms.StudentForm;
 import br.com.schoolcalendar.interfaces.IStudentService;
 import br.com.schoolcalendar.models.Address;
@@ -71,10 +72,20 @@ public class StudentService implements IStudentService {
 		return studentRepository.findByPublicId(publicId)
 				.orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado para o publicId informado."));
 	}
-	
+
 	@Override
 	public Student update(Long id, StudentForm form) {
-		return null;
+		return studentRepository.findById(id).map(student -> {
+			studentValidator.validate(form);
+
+			studentRepository.findByCpfAndIdNot(form.getCpf(), id).ifPresent(st -> {
+				throw new InvalidException("Já existe um estudante com CPF informado.");
+			});
+
+			Student studentConvert = form.toStudent(student);
+
+			return studentRepository.save(studentConvert);
+		}).orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado para o ID informado."));
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import br.com.schoolcalendar.utils.Utils;
 
@@ -133,6 +134,11 @@ public class Student extends BaseEntity {
 
 	@PostPersist
 	protected void postPersist() {
+		generateRegistration();
+	}
+
+	@PreUpdate
+	protected void preUpdate() {
 		generateRegistration();
 	}
 
