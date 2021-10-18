@@ -1,10 +1,15 @@
 package br.com.schoolcalendar.models;
 
+import java.time.LocalDate;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 @Entity
 public class Teacher extends BaseEntity {
@@ -22,7 +27,7 @@ public class Teacher extends BaseEntity {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
 	private Address address;
@@ -83,10 +88,29 @@ public class Teacher extends BaseEntity {
 		this.searchQuery = searchQuery;
 	}
 
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	@Override
+	@PrePersist
 	protected void prePersiste() {
 		super.prePersiste();
 		concatenateSearchQuery();
+	}
+
+	@PreUpdate
+	protected void preUpdate() {
+		concatenateSearchQuery();
+	}
+
+	@PostPersist
+	protected void postPersist() {
+		generateRegistration();
 	}
 
 	public void concatenateSearchQuery() {
@@ -97,5 +121,27 @@ public class Teacher extends BaseEntity {
 		query += this.registration != null ? this.registration : "";
 
 		this.setSearchQuery(query);
+	}
+
+	public void generateRegistration() {
+		String registration = "P-";
+
+		String id = String.valueOf(this.getId());
+
+		registration += String.valueOf(LocalDate.now().getYear());
+		registration += this.cpf != null ? this.cpf.substring(0, 3) : "";
+
+		if (id.length() == 1) {
+			registration += "000";
+		}
+		if (id.length() == 2) {
+			registration += "00";
+		}
+		if (id.length() == 3) {
+			registration += "0";
+		}
+
+		registration += id;
+		this.setRegistration(registration);
 	}
 }
