@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.schoolcalendar.models.Address;
 import br.com.schoolcalendar.models.Teacher;
 import br.com.schoolcalendar.utils.Utils;
 import br.com.schoolcalendar.validator.ValidPassword;
@@ -144,22 +143,14 @@ public class TeacherForm {
 
 	public Teacher toTeacher(Teacher...teachers) {
 		Teacher teacher = new Teacher();
-		Address address = new Address();
 		List<Teacher> list = Arrays.asList(teachers);
 		if(!list.isEmpty())
 			teacher = list.get(0);
-			address = list.get(0).getAddress();
 		
 		teacher.setName(name);
 		teacher.setCpf(getCpf());
 		teacher.setEmail(email);
 		teacher.setPhone(getPhone());
-		address.setZipCode(zipCode);
-		address.setStreet(street);
-		address.setNumber(number);
-		address.setDistrict(district);
-		address.setComplement(complement);
-		teacher.setAddress(address);
 		return teacher;
 	}
 }
