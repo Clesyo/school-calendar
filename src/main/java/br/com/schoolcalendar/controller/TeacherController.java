@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.schoolcalendar.exception.dtos.TeacherDto;
 import br.com.schoolcalendar.forms.TeacherForm;
-import br.com.schoolcalendar.service.TeacherService;
+import br.com.schoolcalendar.interfaces.ITeacherService;
 
 @RestController
 @RequestMapping(path = "/teacher", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TeacherController {
 
 	@Autowired
-	private TeacherService teacherService;
+	private ITeacherService teacherService;
 	
 	@GetMapping("/{id}")
 	public TeacherDto findById(@PathVariable Long id) {
@@ -33,5 +33,11 @@ public class TeacherController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public TeacherDto save(@Valid @RequestBody TeacherForm form) {
 		return TeacherDto.convertTo(teacherService.save(form));
+	}
+	
+	@GetMapping("/{publicId}")
+	@ResponseStatus(code = HttpStatus.OK)
+	public TeacherDto findByPublicId(@PathVariable String publicId) {
+		return TeacherDto.convertTo(teacherService.findByPublicId(publicId));
 	}
 }

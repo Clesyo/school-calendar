@@ -69,7 +69,8 @@ public class TeacherService implements ITeacherService {
 	@Override
 	public Teacher findByPublicId(String publicId) {
 		// TODO Auto-generated method stub
-		return null;
+		return teacherRepository.findByPublicId(publicId)
+				.orElseThrow(() -> new EntityNotFoundException("Professor não encontrado para publicId informado."));
 	}
 
 	@Override

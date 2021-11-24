@@ -9,4 +9,5 @@ import br.com.schoolcalendar.models.Teacher;
 public interface TeacherRepository extends JpaRepository<Teacher, Long>{
 
 	Optional<Teacher> findByCpf(String cpf);
+	Optional<Teacher> findByPublicId(String publicId);
 }
