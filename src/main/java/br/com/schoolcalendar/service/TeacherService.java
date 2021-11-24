@@ -36,7 +36,7 @@ public class TeacherService implements ITeacherService {
 
 	@Autowired
 	private TeacherValidator teacherValidator;
-	
+
 	@Autowired
 	private CityRepository cityRepository;
 
@@ -97,7 +97,7 @@ public class TeacherService implements ITeacherService {
 
 		teacher.setUser(user);
 	}
-	
+
 	public void createAddressFromStudent(TeacherForm form, Teacher teacher) {
 		City city = cityRepository.findByIbgeCode(form.getIbgeCode())
 				.orElseThrow(() -> new EntityNotFoundException("Cidade não encontada para os dados informados."));
