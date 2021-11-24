@@ -1,6 +1,5 @@
 package br.com.schoolcalendar.service;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,6 +22,7 @@ import br.com.schoolcalendar.models.User;
 import br.com.schoolcalendar.repository.CityRepository;
 import br.com.schoolcalendar.repository.RoleRepository;
 import br.com.schoolcalendar.repository.TeacherRepository;
+import br.com.schoolcalendar.utils.Utils;
 import br.com.schoolcalendar.validator.TeacherValidator;
 
 @Service
@@ -48,8 +48,10 @@ public class TeacherService implements ITeacherService {
 
 	@Override
 	public Page<Teacher> find(Optional<String> filter, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		if (filter.isPresent())
+			return teacherRepository.findBySearchQueryContains(Utils.normalizeToQuery(filter.get()).describeConstable(), pageable);
+
+		return teacherRepository.findAll(pageable);
 	}
 
 	@Override
@@ -68,7 +70,6 @@ public class TeacherService implements ITeacherService {
 
 	@Override
 	public Teacher findByPublicId(String publicId) {
-		// TODO Auto-generated method stub
 		return teacherRepository.findByPublicId(publicId)
 				.orElseThrow(() -> new EntityNotFoundException("Professor não encontrado para publicId informado."));
 	}
@@ -82,7 +83,6 @@ public class TeacherService implements ITeacherService {
 	@Override
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void createUserFromTeacher(TeacherForm form, Teacher teacher) {
@@ -94,8 +94,7 @@ public class TeacherService implements ITeacherService {
 		user.setEmail(form.getEmail());
 		user.setName(form.getName());
 		user.setPassword(new BCryptPasswordEncoder().encode(form.getPassword()));
-		user.setRoles(Arrays.asList(role));
-
+		user.setRole(role);
 		teacher.setUser(user);
 	}
 

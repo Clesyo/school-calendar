@@ -1,35 +1,33 @@
 package br.com.schoolcalendar.exception.dtos;
 
+import org.springframework.data.domain.Page;
+
 import br.com.schoolcalendar.models.Teacher;
 
 public class TeacherDto {
 
 	private String publicId;
+	private String name;
 	private String email;
 	private String cpf;
 	private String phone;
-	private String zipeCode;
-	private String street;
-	private String complement;
-	private Integer number;
-	private String city;
-	private String state;
+	private AddressDto address;
 
 	public TeacherDto(Teacher teacher) {
 		this.publicId = teacher.getPublicId();
+		this.name = teacher.getName();
 		this.email = teacher.getEmail();
 		this.cpf = teacher.getCpf();
 		this.phone = teacher.getPhone();
-		this.zipeCode = teacher.getAddress().getZipCode();
-		this.street = teacher.getAddress().getStreet();
-		this.complement = teacher.getAddress().getComplement();
-		this.number = teacher.getAddress().getNumber();
-		this.city = teacher.getAddress().getCity().getName();
-		this.state = teacher.getAddress().getState().getName();
+		this.address = AddressDto.convetTo(teacher.getAddress());
 	}
 
 	public static TeacherDto convertTo(Teacher teacher) {
 		return new TeacherDto(teacher);
+	}
+
+	public static Page<TeacherDto> convertTo(Page<Teacher> teachers) {
+		return teachers.map(TeacherDto::convertTo);
 	}
 
 	public String getPublicId() {
@@ -38,6 +36,14 @@ public class TeacherDto {
 
 	public void setPublicId(String publicId) {
 		this.publicId = publicId;
+	}
+ 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {
@@ -64,52 +70,12 @@ public class TeacherDto {
 		this.phone = phone;
 	}
 
-	public String getZipeCode() {
-		return zipeCode;
+	public AddressDto getAddress() {
+		return address;
 	}
 
-	public void setZipeCode(String zipeCode) {
-		this.zipeCode = zipeCode;
-	}
-
-	public String getStreet() {
-		return street;
-	}
-
-	public void setStreet(String street) {
-		this.street = street;
-	}
-
-	public String getComplement() {
-		return complement;
-	}
-
-	public void setComplement(String complement) {
-		this.complement = complement;
-	}
-
-	public Integer getNumber() {
-		return number;
-	}
-
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
+	public void setAddress(AddressDto address) {
+		this.address = address;
 	}
 
 }

@@ -1,8 +1,5 @@
 package br.com.schoolcalendar.exception.dtos;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.com.schoolcalendar.models.User;
 
 public class UserDto {
@@ -10,18 +7,17 @@ public class UserDto {
 	private String publicId;
 	private String name;
 	private String email;
-	private List<RoleDto> roles;
+	private RoleDto role;
 
-	public UserDto(String publicId, String name, String email, List<RoleDto> role) {
+	public UserDto(String publicId, String name, String email, RoleDto role) {
 		this.publicId = publicId;
 		this.name = name;
 		this.email = email;
-		this.roles = role;
+		this.role = role;
 	}
 
-	public static UserDto convertToDto( User user) {
-		List<RoleDto> roleDtos = user.getRoles().stream().map(RoleDto::convertToDto).collect(Collectors.toList());
-		return new UserDto(user.getPublicId(), user.getName(), user.getEmail(), roleDtos);
+	public static UserDto convertToDto(User user) {
+		return new UserDto(user.getPublicId(), user.getName(), user.getEmail(), RoleDto.convertToDto(user.getRole()));
 	}
 
 	public String getPublicId() {
@@ -48,12 +44,12 @@ public class UserDto {
 		this.email = email;
 	}
 
-	public List<RoleDto> getRoles() {
-		return roles;
+	public RoleDto getRole() {
+		return role;
 	}
 
-	public void setRoles(List<RoleDto> roles) {
-		this.roles = roles;
+	public void setRole(RoleDto role) {
+		this.role = role;
 	}
 
 }

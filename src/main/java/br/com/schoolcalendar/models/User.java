@@ -1,13 +1,11 @@
 package br.com.schoolcalendar.models;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -25,8 +23,9 @@ public class User extends BaseEntity implements UserDetails {
 	@Column(unique = true)
 	private String email;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Role> roles = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn(name = "role_id")
+	private Role role;
 
 	@OneToOne(mappedBy = "user")
 	private Teacher teacher;
@@ -58,12 +57,12 @@ public class User extends BaseEntity implements UserDetails {
 		this.email = email;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role roles) {
+		this.role = roles;
 	}
 
 	public Teacher getTeacher() {
@@ -83,13 +82,12 @@ public class User extends BaseEntity implements UserDetails {
 	}
 
 	public boolean isAdmin() {
-		return getRoles().stream()
-				.anyMatch(role -> role.getName().toUpperCase().equals(UserType.ADMIN.name().toUpperCase()));
+		return getRole().getName().toUpperCase().equals(UserType.ADMIN.name().toUpperCase());
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return (Collection<? extends GrantedAuthority>) roles;
+		return (Collection<? extends GrantedAuthority>) role;
 	}
 
 	@Override

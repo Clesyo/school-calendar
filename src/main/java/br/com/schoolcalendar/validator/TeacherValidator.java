@@ -21,7 +21,7 @@ public class TeacherValidator {
 
 	public void validate(TeacherForm form) {
 
-		if (Utils.isCpfValido(form.getCpf())) {
+		if (!Utils.isCpfValido(form.getCpf())) {
 			throw new InvalidException("CPF", "O CPF informado é inválido.");
 		}
 
@@ -33,7 +33,7 @@ public class TeacherValidator {
 			throw new InvalidException("Já existe um Aluno com CPF informado.");
 		});
 		
-		userRepository.findByEmail(form.getCpf()).ifPresent(s -> {
+		userRepository.findByEmail(form.getEmail()).ifPresent(s -> {
 			throw new InvalidException("Email já está sendo usado por outro usuário.");
 		});
 		

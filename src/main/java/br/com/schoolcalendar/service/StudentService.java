@@ -1,6 +1,5 @@
 package br.com.schoolcalendar.service;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -102,7 +101,7 @@ public class StudentService implements IStudentService {
 		user.setEmail(form.getEmail());
 		user.setName(form.getName());
 		user.setPassword(new BCryptPasswordEncoder().encode(form.getPassword()));
-		user.setRoles(Arrays.asList(role));
+		user.setRole(role);
 
 		student.setUser(user);
 	}

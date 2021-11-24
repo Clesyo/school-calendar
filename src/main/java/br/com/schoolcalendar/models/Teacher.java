@@ -11,6 +11,8 @@ import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import br.com.schoolcalendar.utils.Utils;
+
 @Entity
 public class Teacher extends BaseEntity {
 
@@ -120,7 +122,7 @@ public class Teacher extends BaseEntity {
 		query += this.name != null ? this.name : "";
 		query += this.registration != null ? this.registration : "";
 
-		this.setSearchQuery(query);
+		this.setSearchQuery(Utils.normalizeToQuery(query));
 	}
 
 	public void generateRegistration() {

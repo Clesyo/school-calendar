@@ -31,6 +31,6 @@ public class UserValidator {
 		Role role = roleRepository.findByName(form.getRole())
 				.orElseThrow(() -> new InvalidException("role", "Perfil informado é inválido"));
 
-		user.getRoles().add(role);
+		user.setRole(role);
 	}
 }
