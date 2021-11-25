@@ -43,7 +43,10 @@ public class StudentService implements IStudentService {
 
 	@Override
 	public Page<Student> find(Optional<String> filter, Pageable pageable) {
-		return studentRepository.findBySearchQuery(filter, pageable);
+		if(filter.isPresent())
+		return studentRepository.findBySearchQueryContains(filter, pageable);
+		
+		return studentRepository.findAll(pageable);
 	}
 
 	@Override
