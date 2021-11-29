@@ -13,14 +13,14 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import br.com.schoolcalendar.SchoolCaplendarApiContext;
+import br.com.schoolcalendar.SchoolCalendarApiContext;
 import br.com.schoolcalendar.enums.UserType;
 import br.com.schoolcalendar.models.Role;
 
 @Component
 public abstract class Utils {
 
-	private static SchoolCaplendarApiContext context;
+	private static SchoolCalendarApiContext context;
 
 	public static List<Role> convertUserTypeRoles(UserType... types) {
 		return Arrays.stream(types).map(type -> new Role(type.name())).collect(Collectors.toList());
@@ -30,11 +30,11 @@ public abstract class Utils {
 		return RandomStringUtils.random(length, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
 	}
 
-	public SchoolCaplendarApiContext getContext() {
+	public SchoolCalendarApiContext getContext() {
 		return context;
 	}
 
-	public static void setContext(SchoolCaplendarApiContext context) {
+	public static void setContext(SchoolCalendarApiContext context) {
 		Utils.context = context;
 	}
 

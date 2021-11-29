@@ -27,11 +27,11 @@ public class Address {
 	private String district;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "state_id")
+	@JoinColumn(name = "city_id")
 	private City city;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "city_id")
+	@JoinColumn(name = "state_id")
 	private State state;
 
 	@OneToOne(mappedBy = "address")

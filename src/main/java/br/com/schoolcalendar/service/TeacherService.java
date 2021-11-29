@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.schoolcalendar.enums.UserType;
+import br.com.schoolcalendar.exception.InvalidException;
 import br.com.schoolcalendar.forms.TeacherForm;
 import br.com.schoolcalendar.interfaces.ITeacherService;
 import br.com.schoolcalendar.models.Address;
@@ -49,7 +50,8 @@ public class TeacherService implements ITeacherService {
 	@Override
 	public Page<Teacher> find(Optional<String> filter, Pageable pageable) {
 		if (filter.isPresent())
-			return teacherRepository.findBySearchQueryContains(Utils.normalizeToQuery(filter.get()).describeConstable(), pageable);
+			return teacherRepository.findBySearchQueryContains(Utils.normalizeToQuery(filter.get()).describeConstable(),
+					pageable);
 
 		return teacherRepository.findAll(pageable);
 	}
@@ -77,7 +79,14 @@ public class TeacherService implements ITeacherService {
 	@Override
 	public Teacher update(Long id, TeacherForm form) {
 		// TODO Auto-generated method stub
-		return null;
+		return teacherRepository.findById(id).map(teacher -> {
+			teacherRepository.findByCpfAndIdNot(form.getCpf(), id).ifPresent(st -> {
+				throw new InvalidException("Já existe um professor com CPF informado.");
+			});
+			Teacher teacherUpdate = form.toTeacher(teacher);
+			createAddressFromStudent(form, teacherUpdate);
+			return teacherRepository.save(teacherUpdate);
+		}).orElseThrow(() -> new EntityNotFoundException("Professor não encontrado para o ID informado."));
 	}
 
 	@Override
@@ -103,7 +112,9 @@ public class TeacherService implements ITeacherService {
 				.orElseThrow(() -> new EntityNotFoundException("Cidade não encontada para os dados informados."));
 
 		Address address = new Address();
-
+		if (teacher.getAddress() != null)
+			address = teacher.getAddress();
+		
 		address.setZipCode(form.getZipCode());
 		address.setStreet(form.getStreet());
 		address.setNumber(form.getNumber());

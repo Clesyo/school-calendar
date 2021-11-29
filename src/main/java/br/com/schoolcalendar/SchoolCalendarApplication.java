@@ -14,7 +14,7 @@ import br.com.schoolcalendar.seeders.DefaultSeeder;
 public class SchoolCalendarApplication {
 
 	@Autowired
-	private SchoolCaplendarApiContext context;
+	private SchoolCalendarApiContext context;
 	
 	@Autowired
 	private DefaultSeeder defaultSeeder;

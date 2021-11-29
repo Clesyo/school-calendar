@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,5 +50,11 @@ public class TeacherController {
 	@ResponseStatus(code = HttpStatus.OK)
 	public Page<TeacherDto> find(@RequestParam Optional<String> filter, Pageable pageable) {
 		return TeacherDto.convertTo(teacherService.find(filter, pageable));
+	}
+	
+	@PutMapping("/{id}")
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public TeacherDto udpate(@PathVariable Long id, @Valid @RequestBody TeacherForm form) {
+		return TeacherDto.convertTo(teacherService.update(id, form));
 	}
 }

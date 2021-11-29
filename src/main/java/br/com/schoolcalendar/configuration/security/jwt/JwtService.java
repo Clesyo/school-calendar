@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import br.com.schoolcalendar.SchoolCaplendarApiContext;
+import br.com.schoolcalendar.SchoolCalendarApiContext;
 import br.com.schoolcalendar.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,7 +21,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtService {
 
 	@Autowired
-	private SchoolCaplendarApiContext context;
+	private SchoolCalendarApiContext context;
 
 	public String generateToken(UserDetails user) {
 		Long expiracao = Long.valueOf(context.getApiConfig().getJwtExpirationInMinutes());

@@ -10,7 +10,7 @@ import br.com.schoolcalendar.repository.ApiConfigRepository;
 import br.com.schoolcalendar.utils.Utils;
 
 @Component
-public class SchoolCaplendarApiContext {
+public class SchoolCalendarApiContext {
 
 	private ApiConfig apiConfig;
 	

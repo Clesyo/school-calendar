@@ -1,6 +1,5 @@
 package br.com.schoolcalendar.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -14,4 +13,5 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>{
 	Optional<Teacher> findByCpf(String cpf);
 	Optional<Teacher> findByPublicId(String publicId);
 	Page<Teacher> findBySearchQueryContains(Optional<String> filter, Pageable pageable);
+	Optional<Teacher> findByCpfAndIdNot(String cpf, Long id);
 }

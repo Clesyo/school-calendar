@@ -43,9 +43,9 @@ public class StudentService implements IStudentService {
 
 	@Override
 	public Page<Student> find(Optional<String> filter, Pageable pageable) {
-		if(filter.isPresent())
-		return studentRepository.findBySearchQueryContains(filter, pageable);
-		
+		if (filter.isPresent())
+			return studentRepository.findBySearchQueryContains(filter, pageable);
+
 		return studentRepository.findAll(pageable);
 	}
 
@@ -85,7 +85,7 @@ public class StudentService implements IStudentService {
 			});
 
 			Student studentConvert = form.toStudent(student);
-
+			createAddressFromStudent(form, studentConvert);
 			return studentRepository.save(studentConvert);
 		}).orElseThrow(() -> new EntityNotFoundException("Estudante não encontrado para o ID informado."));
 	}
@@ -105,7 +105,6 @@ public class StudentService implements IStudentService {
 		user.setName(form.getName());
 		user.setPassword(new BCryptPasswordEncoder().encode(form.getPassword()));
 		user.setRole(role);
-
 		student.setUser(user);
 	}
 
@@ -114,6 +113,8 @@ public class StudentService implements IStudentService {
 				.orElseThrow(() -> new EntityNotFoundException("Cidade não encontada para os dados informados."));
 
 		Address address = new Address();
+		if (student.getAddress() != null)
+			address = student.getAddress();
 
 		address.setZipCode(form.getZipCode());
 		address.setStreet(form.getStreet());
