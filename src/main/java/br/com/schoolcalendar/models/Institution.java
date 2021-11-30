@@ -5,9 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
@@ -16,21 +13,29 @@ import br.com.schoolcalendar.enums.AdministrativeDependence;
 import br.com.schoolcalendar.enums.Localization;
 
 @Entity
-public class Institution {
+public class Institution extends BaseEntity {
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-	
+	private static final long serialVersionUID = 1L;
+
 	private String name;
+
 	private String phone;
+
+	private String email;
+
+	private String inep;
+
+	private String cnpj;
+
 	@Enumerated(EnumType.STRING)
 	private Localization localization;
+
 	@Enumerated(EnumType.STRING)
 	private AdministrativeCategory category;
+
 	@Enumerated(EnumType.STRING)
 	private AdministrativeDependence dependence;
-	
+
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
 	private Address address;
@@ -49,6 +54,30 @@ public class Institution {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getInep() {
+		return inep;
+	}
+
+	public void setInep(String inep) {
+		this.inep = inep;
+	}
+
+	public String getCnpj() {
+		return cnpj;
+	}
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
 	}
 
 	public Localization getLocalization() {
@@ -73,6 +102,14 @@ public class Institution {
 
 	public void setDependence(AdministrativeDependence dependence) {
 		this.dependence = dependence;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 }

@@ -1,6 +1,8 @@
 package br.com.schoolcalendar.models;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -87,7 +89,7 @@ public class User extends BaseEntity implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return (Collection<? extends GrantedAuthority>) role;
+		return (Collection<? extends GrantedAuthority>) Arrays.asList(role);
 	}
 
 	@Override
