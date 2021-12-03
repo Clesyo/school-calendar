@@ -1,12 +1,14 @@
 package br.com.schoolcalendar.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PostPersist;
 import javax.persistence.PrePersist;
@@ -42,6 +44,9 @@ public class Student extends BaseEntity {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
 	private Address address;
+	
+	@OneToMany(mappedBy = "student")
+	private List<Notice> notices;
 
 	public String getName() {
 		return name;
