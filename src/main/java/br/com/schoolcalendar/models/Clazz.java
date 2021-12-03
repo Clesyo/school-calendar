@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity(name = "class")
 public class Clazz {
@@ -21,6 +23,12 @@ public class Clazz {
 	
 	@ManyToMany
 	private List<SchoolSubjects> subjects;
+	
+	@OneToOne(mappedBy = "clazz")
+	private Student student;
+	
+	@OneToMany(mappedBy = "clazz")
+	private List<ScheduleSubjects> schedules;
 
 	public Long getId() {
 		return id;

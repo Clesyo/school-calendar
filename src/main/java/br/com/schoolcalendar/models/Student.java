@@ -50,6 +50,10 @@ public class Student extends BaseEntity {
 	
 	@OneToMany(mappedBy = "student")
 	private List<Accountable> accountables;
+	
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name ="class_id")
+	private Clazz clazz;
 
 	public String getName() {
 		return name;
