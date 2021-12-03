@@ -8,29 +8,42 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-@Entity
-public class SchoolSubjects {
+@Entity(name = "class")
+public class Clazz {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String name;
+	private String description;
+	
+	private String title;
 	
 	@ManyToMany
-	private List<Clazz> clazzs;
-	
+	private List<SchoolSubjects> subjects;
+
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
+
+	public String getDescription() {
+		return description;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	
