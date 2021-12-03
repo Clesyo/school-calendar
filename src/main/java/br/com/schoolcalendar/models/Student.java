@@ -47,6 +47,9 @@ public class Student extends BaseEntity {
 	
 	@OneToMany(mappedBy = "student")
 	private List<Notice> notices;
+	
+	@OneToMany(mappedBy = "student")
+	private List<Accountable> accountables;
 
 	public String getName() {
 		return name;
