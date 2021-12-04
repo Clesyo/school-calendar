@@ -1,0 +1,38 @@
+[
+	{
+		"name":"Literatura Portuguesa" 
+	},
+	{
+		"name":"Literatura estrangeira Inglês" 
+	},
+	{
+		"name":"Literatura estrangeira Espanhol" 
+	},
+	{
+		"name":"Matemática" 
+	},
+	{
+		"name":"Física" 
+	},
+	{
+		"name":"Química" 
+	},
+	{
+		"name":"Biologia" 
+	},
+	{
+		"name":"História" 
+	},
+	{
+		"name":"Geografia" 
+	},
+	{
+		"name":"Sociologia" 
+	},
+	{
+		"name":"Artes" 
+	},
+	{
+		"name":"Informática" 
+	}
+]

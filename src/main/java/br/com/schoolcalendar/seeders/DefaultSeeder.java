@@ -6,6 +6,7 @@ import static br.com.schoolcalendar.enums.UserType.TEACHER;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +23,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
 import br.com.schoolcalendar.models.City;
+import br.com.schoolcalendar.models.Discipline;
 import br.com.schoolcalendar.models.State;
 import br.com.schoolcalendar.models.User;
 import br.com.schoolcalendar.repository.CityRepository;
+import br.com.schoolcalendar.repository.DisciplineRepository;
 import br.com.schoolcalendar.repository.RoleRepository;
 import br.com.schoolcalendar.repository.StateRepository;
 import br.com.schoolcalendar.repository.UserRepository;
@@ -44,6 +47,9 @@ public class DefaultSeeder {
 
 	@Autowired
 	private CityRepository cityRepository;
+
+	@Autowired
+	private DisciplineRepository disciplineRepository;
 
 	private List<State> allStates;
 
@@ -130,6 +136,30 @@ public class DefaultSeeder {
 			LOGGER.info(">>>>>>>>>>>>>> ERRO AO CRIAR ESTADOS E CIDADES >>>>>>>>>>>>>>");
 			e.printStackTrace();
 		}
-
 	}
+
+	public void seedDiscipline() {
+
+		if (disciplineRepository.count() > 0)
+			return;
+		
+		try {
+			Resource disciplinesResource = new ClassPathResource("seeders/disciplines.json");
+			disciplinesResource.getInputStream();
+			File file = disciplinesResource.getFile();
+			JsonArray disciplines = JsonParser.parseReader(new FileReader(file)).getAsJsonArray();
+
+			List<Discipline> list = new ArrayList<Discipline>();
+
+			disciplines.forEach(dis -> {
+				Discipline discipline = new Discipline(dis.getAsJsonObject().get("name").getAsString());
+				list.add(discipline);
+			});
+			disciplineRepository.saveAll(list);
+		} catch (IOException e) {
+			LOGGER.info(">>>>>>>>>>>>>> ERRO AO CRIAR DISCIPLINAS >>>>>>>>>>>>>>");
+			e.printStackTrace();
+		}
+	}
+
 }

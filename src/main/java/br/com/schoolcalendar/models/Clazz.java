@@ -22,7 +22,7 @@ public class Clazz {
 	private String title;
 	
 	@ManyToMany
-	private List<SchoolSubjects> subjects;
+	private List<Discipline> subjects;
 	
 	@OneToOne(mappedBy = "clazz")
 	private Student student;

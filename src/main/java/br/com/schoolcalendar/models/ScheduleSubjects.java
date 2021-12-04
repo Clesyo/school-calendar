@@ -20,7 +20,7 @@ public class ScheduleSubjects {
 	
 	@ManyToOne
 	@JoinColumn(name = "subject_id")
-	private SchoolSubjects subjects;
+	private Discipline subjects;
 	
 	@ManyToOne
 	@JoinColumn(name = "class_id")
@@ -37,11 +37,11 @@ public class ScheduleSubjects {
 		this.id = id;
 	}
 
-	public SchoolSubjects getSubjects() {
+	public Discipline getSubjects() {
 		return subjects;
 	}
 
-	public void setSubjects(SchoolSubjects subjects) {
+	public void setSubjects(Discipline subjects) {
 		this.subjects = subjects;
 	}
 

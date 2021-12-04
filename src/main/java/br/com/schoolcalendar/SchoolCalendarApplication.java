@@ -30,5 +30,6 @@ public class SchoolCalendarApplication {
 		defaultSeeder.seedUser();
 		defaultSeeder.seedStatesAndCities();
 		defaultSeeder.seedProfiles();
+		defaultSeeder.seedDiscipline();
 	}
 }
