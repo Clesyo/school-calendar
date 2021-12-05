@@ -1,6 +1,6 @@
 package br.com.schoolcalendar.enums;
 
-public enum AccoutableGrade {
+public enum AccountableGrade {
 
 	TIO,MAE,PAI,AVO,IRMAO;
 }

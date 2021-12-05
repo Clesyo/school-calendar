@@ -1,6 +1,6 @@
 package br.com.schoolcalendar.validator;
 
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,20 +9,16 @@ import org.springframework.stereotype.Service;
 import br.com.schoolcalendar.exception.InvalidException;
 import br.com.schoolcalendar.forms.StudentForm;
 import br.com.schoolcalendar.models.Student;
-import br.com.schoolcalendar.repository.StudentRepository;
-import br.com.schoolcalendar.repository.UserRepository;
+import br.com.schoolcalendar.repository.AccountableRepository;
 import br.com.schoolcalendar.utils.Utils;
 
 @Service
-public class StudentValidator {
+public class AccountableValidator {
 
 	@Autowired
-	private StudentRepository studentRepository;
+	private AccountableRepository accountableRepository;
 
-	@Autowired
-	private UserRepository userRepository;
-
-	public void validate(StudentForm form) {
+	public void validate(StudentForm form, Student student) {
 
 		if (!Utils.isCpfValido(form.getCpf())) {
 			throw new InvalidException("CPF", "O CPF informado é inválido.");
@@ -32,13 +28,15 @@ public class StudentValidator {
 			throw new InvalidException("Telefone", "Telefone inválido");
 		}
 
-		Optional<Student> student = studentRepository.findByCpf(form.getCpf());
-		if (student.isPresent()) {
-			throw new InvalidException("Já existe um Aluno com CPF informado.");
+		form.getAccountables().forEach(accForm -> {
+			accountableRepository.findByCpfAndStudent(accForm.getCpf(), student).ifPresent(acc -> {
+				throw new EntityNotFoundException("Responsável já associado ao Aluno.");
+			});
+		});
+		
+		if(form.getAccountables().isEmpty()) {
+			throw new InvalidException("É necessário informar no mínimo um responsável por aluno.");
 		}
 
-		userRepository.findByEmail(form.getCpf()).ifPresent(s -> {
-			throw new InvalidException("Email já está sendo usado por outro usuário.");
-		});
 	}
 }

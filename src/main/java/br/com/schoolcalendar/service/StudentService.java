@@ -1,6 +1,8 @@
 package br.com.schoolcalendar.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -16,14 +18,17 @@ import br.com.schoolcalendar.enums.UserType;
 import br.com.schoolcalendar.exception.InvalidException;
 import br.com.schoolcalendar.forms.StudentForm;
 import br.com.schoolcalendar.interfaces.IStudentService;
+import br.com.schoolcalendar.models.Accountable;
 import br.com.schoolcalendar.models.Address;
 import br.com.schoolcalendar.models.City;
 import br.com.schoolcalendar.models.Role;
 import br.com.schoolcalendar.models.Student;
 import br.com.schoolcalendar.models.User;
+import br.com.schoolcalendar.repository.AccountableRepository;
 import br.com.schoolcalendar.repository.CityRepository;
 import br.com.schoolcalendar.repository.RoleRepository;
 import br.com.schoolcalendar.repository.StudentRepository;
+import br.com.schoolcalendar.validator.AccountableValidator;
 import br.com.schoolcalendar.validator.StudentValidator;
 
 @Service
@@ -36,10 +41,16 @@ public class StudentService implements IStudentService {
 	private StudentValidator studentValidator;
 
 	@Autowired
+	private AccountableValidator accountableValidator;
+
+	@Autowired
 	private RoleRepository roleRepository;
 
 	@Autowired
 	private CityRepository cityRepository;
+
+	@Autowired
+	private AccountableRepository accountableRepository;
 
 	@Override
 	public Page<Student> find(Optional<String> filter, Pageable pageable) {
@@ -60,7 +71,9 @@ public class StudentService implements IStudentService {
 		if (studentExist.isPresent()) {
 			return studentExist.get();
 		}
-		return studentRepository.save(student);
+		studentRepository.save(student);
+		createAccoutableFromStudent(form, student);
+		return student;
 	}
 
 	@Override
@@ -124,6 +137,14 @@ public class StudentService implements IStudentService {
 		address.setCity(city);
 		address.setState(city.getState());
 		student.setAddress(address);
+	}
+
+	public void createAccoutableFromStudent(StudentForm form, Student student) {
+		accountableValidator.validate(form, student);
+		List<Accountable> accountables = form.getAccountables().stream()
+				.map(accountable -> accountable.toAccountable(student)).collect(Collectors.toList());
+		accountableRepository.saveAll(accountables);
+		student.setAccountables(accountables);
 	}
 
 }

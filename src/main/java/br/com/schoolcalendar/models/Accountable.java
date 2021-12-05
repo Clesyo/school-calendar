@@ -1,10 +1,12 @@
 package br.com.schoolcalendar.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import br.com.schoolcalendar.enums.AccoutableGrade;
+import br.com.schoolcalendar.enums.AccountableGrade;
 
 @Entity
 public class Accountable extends BaseEntity {
@@ -13,7 +15,7 @@ public class Accountable extends BaseEntity {
 
 	private String name;
 
-	private AccoutableGrade grade;
+	private AccountableGrade grade;
 
 	private String cpf;
 
@@ -21,9 +23,21 @@ public class Accountable extends BaseEntity {
 
 	private String email;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "student_id")
 	private Student student;
+
+	
+	public Accountable() {
+	}
+
+	public Accountable(String name, AccountableGrade grade, String cpf, String phone, String email) {
+		this.name = name;
+		this.grade = grade;
+		this.cpf = cpf;
+		this.phone = phone;
+		this.email = email;
+	}
 
 	public String getName() {
 		return name;
@@ -33,11 +47,11 @@ public class Accountable extends BaseEntity {
 		this.name = name;
 	}
 
-	public AccoutableGrade getGrade() {
+	public AccountableGrade getGrade() {
 		return grade;
 	}
 
-	public void setGrade(AccoutableGrade grade) {
+	public void setGrade(AccountableGrade grade) {
 		this.grade = grade;
 	}
 

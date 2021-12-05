@@ -127,6 +127,14 @@ public class Student extends BaseEntity {
 		this.user = user;
 	}
 
+	public List<Accountable> getAccountables() {
+		return accountables;
+	}
+
+	public void setAccountables(List<Accountable> accountables) {
+		this.accountables = accountables;
+	}
+
 	@Override
 	@PrePersist
 	protected void prePersiste() {

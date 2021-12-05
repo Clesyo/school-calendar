@@ -1,5 +1,7 @@
 package br.com.schoolcalendar.dtos;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import br.com.schoolcalendar.models.Student;
@@ -14,6 +16,7 @@ public class StudentDto {
 	private String phone;
 	private String birthday;
 	private AddressDto address;
+	private List<AccountableDto> accountables;
 
 	public StudentDto(Student student) {
 		this.publicId = student.getPublicId();
@@ -23,11 +26,13 @@ public class StudentDto {
 		this.phone = student.getPhone();
 		this.birthday = Utils.dateFormatedToString(student.getBirthday());
 		this.address = AddressDto.convetTo(student.getAddress());
+		this.accountables = AccountableDto.convertTo(student.getAccountables());
 	}
 
 	public static StudentDto convertToDto(Student student) {
 		return new StudentDto(student);
 	}
+
 	public static Page<StudentDto> convertTo(Page<Student> students) {
 		return students.map(StudentDto::convertToDto);
 	}
@@ -88,4 +93,11 @@ public class StudentDto {
 		this.address = address;
 	}
 
+	public List<AccountableDto> getAccountables() {
+		return accountables;
+	}
+
+	public void setAccountables(List<AccountableDto> accountables) {
+		this.accountables = accountables;
+	}
 }

@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.schoolcalendar.models.Address;
 import br.com.schoolcalendar.models.Student;
 import br.com.schoolcalendar.utils.Utils;
 import br.com.schoolcalendar.validator.ValidPassword;
@@ -49,6 +48,8 @@ public class StudentForm {
 
 	@NotNull(message = "Codigo do IBGE não pode ser vazio.")
 	private Integer ibgeCode;
+
+	private List<AccountableForm> accountables;
 
 	public String getName() {
 		return name;
@@ -150,6 +151,14 @@ public class StudentForm {
 
 	public void setIbgeCode(Integer ibgeCode) {
 		this.ibgeCode = ibgeCode;
+	}
+
+	public List<AccountableForm> getAccountables() {
+		return accountables;
+	}
+
+	public void setAccountables(List<AccountableForm> accountableForms) {
+		this.accountables = accountableForms;
 	}
 
 	public Student toStudent(Student... students) {
