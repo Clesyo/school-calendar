@@ -12,15 +12,15 @@ import javax.persistence.ManyToOne;
 import br.com.schoolcalendar.enums.Weekday;
 
 @Entity
-public class ScheduleSubjects {
+public class ScheduleDiscipline {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "subject_id")
-	private Discipline subjects;
+	@JoinColumn(name = "discipline_id")
+	private Discipline discipline;
 	
 	@ManyToOne
 	@JoinColumn(name = "class_id")
@@ -37,12 +37,12 @@ public class ScheduleSubjects {
 		this.id = id;
 	}
 
-	public Discipline getSubjects() {
-		return subjects;
+	public Discipline getDiscipline() {
+		return discipline;
 	}
 
-	public void setSubjects(Discipline subjects) {
-		this.subjects = subjects;
+	public void setDiscipline(Discipline subjects) {
+		this.discipline = subjects;
 	}
 
 	public Clazz getClazz() {

@@ -28,7 +28,7 @@ public class Clazz {
 	private Student student;
 	
 	@OneToMany(mappedBy = "clazz")
-	private List<ScheduleSubjects> schedules;
+	private List<ScheduleDiscipline> schedules;
 
 	public Long getId() {
 		return id;

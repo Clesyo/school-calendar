@@ -21,6 +21,9 @@ public class Discipline {
 		this.name = name;
 	}
 
+	public Discipline() {
+	}
+
 	@ManyToMany
 	private List<Clazz> clazzs;
 
