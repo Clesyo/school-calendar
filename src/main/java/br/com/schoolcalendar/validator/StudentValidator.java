@@ -21,7 +21,7 @@ public class StudentValidator {
 
 	public void validate(StudentForm form) {
 
-		if (Utils.isCpfValido(form.getCpf())) {
+		if (!Utils.isCpfValido(form.getCpf())) {
 			throw new InvalidException("CPF", "O CPF informado é inválido.");
 		}
 

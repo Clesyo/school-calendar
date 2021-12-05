@@ -13,8 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.schoolcalendar.configuration.security.jwt.JwtService;
-import br.com.schoolcalendar.exception.dtos.MessageDto;
-import br.com.schoolcalendar.exception.dtos.TokenDto;
+import br.com.schoolcalendar.dtos.MessageDto;
+import br.com.schoolcalendar.dtos.TokenDto;
 import br.com.schoolcalendar.forms.CredentialForm;
 import br.com.schoolcalendar.repository.UserRepository;
 

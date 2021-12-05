@@ -1,4 +1,4 @@
-package br.com.schoolcalendar.exception.dtos;
+package br.com.schoolcalendar.dtos;
 
 import br.com.schoolcalendar.models.Institution;
 

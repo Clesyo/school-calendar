@@ -1,4 +1,4 @@
-package br.com.schoolcalendar.exception.dtos;
+package br.com.schoolcalendar.dtos;
 
 import org.springframework.data.domain.Page;
 

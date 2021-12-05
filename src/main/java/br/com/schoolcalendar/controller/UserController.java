@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.schoolcalendar.exception.dtos.UserDto;
+import br.com.schoolcalendar.dtos.UserDto;
 import br.com.schoolcalendar.forms.UserForm;
 import br.com.schoolcalendar.service.UserService;
 

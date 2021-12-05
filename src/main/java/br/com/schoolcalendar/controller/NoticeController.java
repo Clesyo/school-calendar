@@ -4,27 +4,26 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.schoolcalendar.dtos.InstitutionDto;
-import br.com.schoolcalendar.forms.InstitutionForm;
-import br.com.schoolcalendar.interfaces.IInstitutionService;
+import br.com.schoolcalendar.dtos.NoticeDto;
+import br.com.schoolcalendar.forms.NoticeForm;
+import br.com.schoolcalendar.interfaces.INoticeService;
 
 @RestController
-@RequestMapping(path = "/institution", produces = MediaType.APPLICATION_JSON_VALUE)
-public class InstitutionController {
-
+@RequestMapping(path = "/notice")
+public class NoticeController {
+	
 	@Autowired
-	private IInstitutionService institutionService;
+	private INoticeService noticeService;
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public InstitutionDto save(@RequestBody @Valid InstitutionForm form) {
-		return InstitutionDto.convertTo(institutionService.save(form));
+	public NoticeDto save(@RequestBody @Valid NoticeForm form) {
+		return NoticeDto.convertoTo(noticeService.save(form));
 	}
 }

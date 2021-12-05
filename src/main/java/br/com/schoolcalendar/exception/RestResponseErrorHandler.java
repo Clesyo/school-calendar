@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.mchange.rmi.NotAuthorizedException;
 
-import br.com.schoolcalendar.exception.dtos.ErrorFormDto;
+import br.com.schoolcalendar.dtos.ErrorFormDto;
 
 @RestControllerAdvice
 public class RestResponseErrorHandler {

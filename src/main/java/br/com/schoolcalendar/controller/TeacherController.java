@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.schoolcalendar.exception.dtos.TeacherDto;
+import br.com.schoolcalendar.dtos.TeacherDto;
 import br.com.schoolcalendar.forms.TeacherForm;
 import br.com.schoolcalendar.interfaces.ITeacherService;
 
