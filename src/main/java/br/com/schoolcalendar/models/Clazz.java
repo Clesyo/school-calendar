@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -20,9 +19,6 @@ public class Clazz {
 	private String description;
 	
 	private String title;
-	
-	@ManyToMany
-	private List<Discipline> subjects;
 	
 	@OneToOne(mappedBy = "clazz")
 	private Student student;
@@ -52,6 +48,14 @@ public class Clazz {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public List<ScheduleDiscipline> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(List<ScheduleDiscipline> schedules) {
+		this.schedules = schedules;
 	}
 	
 	

@@ -1,12 +1,9 @@
 package br.com.schoolcalendar.models;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 @Entity
 public class Discipline {
@@ -23,9 +20,6 @@ public class Discipline {
 
 	public Discipline() {
 	}
-
-	@ManyToMany
-	private List<Clazz> clazzs;
 
 	public Long getId() {
 		return id;

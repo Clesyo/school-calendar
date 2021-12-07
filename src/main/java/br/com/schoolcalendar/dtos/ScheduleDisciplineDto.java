@@ -1,5 +1,7 @@
 package br.com.schoolcalendar.dtos;
 
+import java.util.List;
+
 import br.com.schoolcalendar.models.ScheduleDiscipline;
 
 public class ScheduleDisciplineDto {
@@ -17,8 +19,11 @@ public class ScheduleDisciplineDto {
 	}
 
 	public static ScheduleDisciplineDto convertTo(ScheduleDiscipline scheduleDiscipline) {
-		// TODO Auto-generated method stub
 		return new ScheduleDisciplineDto(scheduleDiscipline);
+	}
+
+	public static List<ScheduleDisciplineDto> convertTo(List<ScheduleDiscipline> disciplines) {
+		return disciplines.stream().map(ScheduleDisciplineDto::convertTo).toList();
 	}
 
 	public String getClazz() {
