@@ -1,5 +1,7 @@
 package br.com.schoolcalendar.configuration.security.auth;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Service;
 import br.com.schoolcalendar.configuration.security.jwt.JwtService;
 import br.com.schoolcalendar.dtos.MessageDto;
 import br.com.schoolcalendar.dtos.TokenDto;
+import br.com.schoolcalendar.dtos.UserDto;
 import br.com.schoolcalendar.forms.CredentialForm;
+import br.com.schoolcalendar.models.User;
 import br.com.schoolcalendar.repository.UserRepository;
 
 @Service
@@ -59,4 +63,10 @@ public class AuthenticationService implements UserDetailsService {
 
 	}
 
+	public ResponseEntity<Object> me(String token){
+		
+		String login = jwtService.obtainLoginUser(token);
+		Optional<User> user = userRepository.findByEmail(login);
+		return ResponseEntity.ok(UserDto.convertToDto(user.get()));
+	}
 }

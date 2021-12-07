@@ -3,12 +3,13 @@ package br.com.schoolcalendar.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +28,11 @@ public class AuthenticateController {
 			throws MethodArgumentNotValidException, NoSuchMethodException, SecurityException {
 		
 		return authenticationService.authenticate(form); 
+	}
+	
+	@GetMapping("/me")
+	public ResponseEntity<Object> me(@RequestHeader String token){
+	
+		return  authenticationService.me(token);
 	}
 }
