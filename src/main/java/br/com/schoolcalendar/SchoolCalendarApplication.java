@@ -27,9 +27,9 @@ public class SchoolCalendarApplication {
 	public void init() {
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 		context.load();
+		defaultSeeder.seedProfiles();
 		defaultSeeder.seedUser();
 		defaultSeeder.seedStatesAndCities();
-		defaultSeeder.seedProfiles();
 		defaultSeeder.seedDiscipline();
 	}
 }

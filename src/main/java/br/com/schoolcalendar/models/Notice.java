@@ -15,6 +15,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.schoolcalendar.enums.NoticeStatus;
 import br.com.schoolcalendar.enums.NoticeType;
 
 @Entity
@@ -23,7 +24,8 @@ public class Notice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(columnDefinition = "varchar(800) default ''")
+	
+	@Column(columnDefinition = "varchar(800) default NULL")
 	private String text;
 	
 	@ManyToOne
@@ -31,11 +33,14 @@ public class Notice {
 	private Student student;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(columnDefinition = "datatime default current_timestamp")
+	@Column(columnDefinition = "datetime default current_timestamp")
 	private Date createdAt;
 	
 	@Enumerated(EnumType.STRING)
 	private NoticeType type;
+	
+	@Enumerated(EnumType.STRING)
+	private NoticeStatus status;
 
 	public Long getId() {
 		return id;
@@ -82,4 +87,11 @@ public class Notice {
         this.createdAt = new Date();
     }
 
+	public NoticeStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(NoticeStatus status) {
+		this.status = status;
+	}
 }

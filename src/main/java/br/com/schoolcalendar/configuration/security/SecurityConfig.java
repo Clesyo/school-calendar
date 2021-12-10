@@ -2,7 +2,7 @@ package br.com.schoolcalendar.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import static org.springframework.http.HttpMethod.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -51,17 +51,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
-		.antMatchers(GET, "/").permitAll()
+		.antMatchers(HttpMethod.GET, "/").permitAll()
 		.antMatchers("/auth").permitAll()
-		.antMatchers(GET, "/student/**").hasAnyRole("ADMIN","TEACHER")
-		.antMatchers(POST, "/student/**").hasAnyRole("ADMIN")
-		.antMatchers("/teacher/**").hasAnyRole("ADMIN")
-		.antMatchers("/institution/**").hasAnyRole("ADMIN")
-		.antMatchers(POST, "/clazz/**").hasAnyRole("ADMIN")
-		.antMatchers(GET, "/clazz/**").hasAnyRole("ADMIN","TEACHER")
-		.antMatchers(POST, "/schedule/**").hasAnyRole("ADMIN","TEACHER")
-		.antMatchers(GET, "/schedule/**").permitAll()
-		.antMatchers(POST, "/notice/**").hasAnyRole("ADMIN","TEACHER")
+				/*
+				 * .antMatchers(HttpMethod.GET, "/student/**").hasAnyRole("ADMIN","TEACHER")
+				 * .antMatchers(HttpMethod.POST, "/student/**").hasAnyRole("ADMIN")
+				 * .antMatchers("/teacher/**").hasAnyRole("ADMIN")
+				 * .antMatchers("/institution/**").hasAnyRole("ADMIN")
+				 * .antMatchers(HttpMethod.POST, "/clazz/**").hasAnyRole("ADMIN")
+				 * .antMatchers(HttpMethod.GET, "/clazz/**").hasAnyRole("ADMIN","TEACHER")
+				 * .antMatchers(HttpMethod.POST, "/schedule/**").hasAnyRole("ADMIN","TEACHER")
+				 * .antMatchers(HttpMethod.POST, "/notice/**").hasAnyRole("ADMIN","TEACHER")
+				 */
 		.anyRequest().authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 		.addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
