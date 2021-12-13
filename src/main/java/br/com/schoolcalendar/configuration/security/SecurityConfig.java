@@ -2,8 +2,6 @@ package br.com.schoolcalendar.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -31,16 +29,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	private String[] urls = { "/v2/api-docs", "configuration/ui", "/swagger-resources/**", "/configuration/security",
+			"/swagger-ui.html", "/webjars/**" };
 
 	@Bean
 	public OncePerRequestFilter authFilter() {
 		return new JwtAuthFilter(jwtService, userRepository);
-	}
-
-	@Override
-	@Bean
-	protected AuthenticationManager authenticationManager() throws Exception {
-		return super.authenticationManager();
 	}
 
 	@Override
@@ -51,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
-		.antMatchers(HttpMethod.GET, "/").permitAll()
+		.antMatchers("/").permitAll()
 		.antMatchers("/auth").permitAll()
 				/*
 				 * .antMatchers(HttpMethod.GET, "/student/**").hasAnyRole("ADMIN","TEACHER")
@@ -70,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		super.configure(web);
+		web.ignoring().antMatchers(urls);
 	}
 
 	@Override

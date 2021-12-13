@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.schoolcalendar.dtos.ClazzDto;
 import br.com.schoolcalendar.forms.ClazzForm;
 import br.com.schoolcalendar.interfaces.IClazzService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(path = "/clazz")
+@Api(tags = "Class")
 public class ClazzController {
 
 	@Autowired
@@ -26,11 +29,14 @@ public class ClazzController {
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
+	@ApiOperation("Salva uma nova turma")
 	public ClazzDto save(@RequestBody @Valid ClazzForm form) {
 		return ClazzDto.convertTo(clazzService.save(form));
 	}
 	
 	@GetMapping
+	@ResponseStatus(code = HttpStatus.OK)
+	@ApiOperation("Retorna uma lista de turmas")
 	public List<ClazzDto> findAll(){
 		return ClazzDto.convertTo(clazzService.findAll());
 	}

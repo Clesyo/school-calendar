@@ -15,15 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.schoolcalendar.configuration.security.auth.AuthenticationService;
 import br.com.schoolcalendar.forms.CredentialForm;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(path = "/auth")
+@Api(tags = "Authenticate")
 public class AuthenticateController {
 
 	@Autowired
 	private AuthenticationService authenticationService;
 	
 	@PostMapping
+	@ApiOperation("Autenticação de usuário")
 	public ResponseEntity<Object> auth(@RequestBody @Valid CredentialForm form, BindingResult result)
 			throws MethodArgumentNotValidException, NoSuchMethodException, SecurityException {
 		
@@ -31,6 +35,7 @@ public class AuthenticateController {
 	}
 	
 	@GetMapping("/me")
+	@ApiOperation("Retorna usuário autenticado")
 	public ResponseEntity<Object> me(@RequestHeader String token){
 	
 		return  authenticationService.me(token);

@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.schoolcalendar.models.User;
@@ -34,11 +33,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-
+		String authorization = request.getHeader("Authorization");
+		if (authorization != null && authorization.startsWith("Bearer")) {
+			String token = authorization.replace("Bearer ", "");
+		
 		boolean authenticationRequest = isPublicResource(request);
 		if (!authenticationRequest) {
-			validateToken(request);
+			validateToken(request, token);
 		}
+	}
 		filterChain.doFilter(request, response);
 	}
 
@@ -51,17 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		SecurityContextHolder.getContext().setAuthentication(userPasswordAuthenticationToken);
 	}
 
-	private String getToken(HttpServletRequest request) {
-		String authorization = request.getHeader("Authorization");
-
-		if (!StringUtils.hasLength(authorization) && !authorization.startsWith("Bearer")) {
-			return null;
-		}
-		return authorization.replace("Bearer ", "");
-	}
-
-	private void validateToken(HttpServletRequest request) {
-		String token = getToken(request);
+	private void validateToken(HttpServletRequest request, String token) {
 		boolean valid = jwtService.tokenValid(token);
 		if (valid) {
 			authenticate(token, request);

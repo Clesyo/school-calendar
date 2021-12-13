@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.schoolcalendar.dtos.UserDto;
 import br.com.schoolcalendar.forms.UserForm;
 import br.com.schoolcalendar.service.UserService;
+import io.swagger.annotations.Api;
 
 @RestController
 @RequestMapping(path = "/user")
+@Api(tags = "User")
 public class UserController {
 
 	@Autowired

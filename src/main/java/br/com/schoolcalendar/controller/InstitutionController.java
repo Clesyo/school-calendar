@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.schoolcalendar.dtos.InstitutionDto;
 import br.com.schoolcalendar.forms.InstitutionForm;
 import br.com.schoolcalendar.interfaces.IInstitutionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(path = "/institution", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(tags = "Institution")
 public class InstitutionController {
 
 	@Autowired
@@ -24,6 +27,7 @@ public class InstitutionController {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
+	@ApiOperation("Salva uma nova Instituição")
 	public InstitutionDto save(@RequestBody @Valid InstitutionForm form) {
 		return InstitutionDto.convertTo(institutionService.save(form));
 	}
